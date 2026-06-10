@@ -2,7 +2,8 @@
 
 > **Software shouldn't be predefined. It should be fluid.**
 
-<img width="1307" height="577" alt="image" src="https://github.com/user-attachments/assets/cb8cce90-4e22-4640-819e-a972f596b533" />
+<img width="1916" height="970" alt="image" src="https://github.com/user-attachments/assets/11eef75f-600f-4f4d-8ded-214f952fa2cd" />
+
 
 
 Fluid dissolves the barrier between human thought and digital interfaces. Instead of forcing users into rigid, pre-built applications, Fluid uses generative computing to synthesize, compile, and render functional React micro-applications on-demand—creating bespoke software the exact second a user requests it.
