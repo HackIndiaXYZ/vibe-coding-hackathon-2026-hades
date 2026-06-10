@@ -2,6 +2,8 @@
 
 > **Software shouldn't be predefined. It should be fluid.**
 
+![Fluid Platform Live Interface Demo](./public/demo.png)
+
 Fluid dissolves the barrier between human thought and digital interfaces. Instead of forcing users into rigid, pre-built applications, Fluid uses generative computing to synthesize, compile, and render functional React micro-applications on-demand—creating bespoke software the exact second a user requests it.
 
 Built in 24 hours for the **Vibe Coding Hackathon 2026**.
