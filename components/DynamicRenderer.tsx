@@ -44,21 +44,19 @@ export default function DynamicRenderer({
   }, [code]);
 
   if (!Component) return (
-    <div className="p-4 text-sm text-red-500 bg-red-50 dark:bg-red-950/30 rounded-xl">
+    <div className="p-4 text-sm text-red-600 bg-red-50 rounded-xl font-sans">
       Couldn&apos;t render this UI — try rephrasing your request.
     </div>
   );
 
   return (
     <ErrorBoundary fallback={
-      <div className="p-4 text-sm text-red-500 bg-red-50 dark:bg-red-950/30 rounded-xl">
+      <div className="p-4 text-sm text-red-600 bg-red-50 rounded-xl font-sans">
         Something went wrong rendering this UI.
       </div>
     }>
       <div
-        className={`animate-fadeUp border border-gray-100 dark:border-gray-800
-                    rounded-2xl overflow-hidden bg-white dark:bg-gray-900
-                    shadow-sm transition-all duration-200
+        className={`animate-fadeUp transition-all duration-200
                     ${isDismissing
                       ? 'opacity-0 scale-[0.97]'
                       : 'opacity-100 scale-100'

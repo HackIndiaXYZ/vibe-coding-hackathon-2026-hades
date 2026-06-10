@@ -6,21 +6,17 @@ import DynamicRenderer from '@/components/DynamicRenderer';
 /* ─── Shimmer skeleton card ───────────────────────────────── */
 function ShimmerCard() {
   return (
-    <div className="w-full mt-4 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl overflow-hidden shadow-sm p-6 sm:p-8">
+    <div className="w-full mt-4 bg-white border border-zinc-100 rounded-2xl overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.04)] p-6 sm:p-8">
       <style>{`
         @keyframes shimmerSlide {
           0%   { background-position: 200% 0; }
           100% { background-position: -200% 0; }
         }
         .shimmer-bar {
-          background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+          background: linear-gradient(90deg, #f4f4f5 25%, #e4e4e7 50%, #f4f4f5 75%);
           background-size: 200% 100%;
           animation: shimmerSlide 1.5s infinite linear;
           border-radius: 4px;
-        }
-        .dark .shimmer-bar {
-          background: linear-gradient(90deg, #1f2937 25%, #374151 50%, #1f2937 75%);
-          background-size: 200% 100%;
         }
       `}</style>
       <div className="shimmer-bar h-4 w-3/4 mb-3" />
@@ -48,28 +44,28 @@ function HistoryPanel({
       {/* Backdrop (mobile) */}
       {open && (
         <div
-          className="fixed inset-0 z-40 bg-black/20 sm:hidden"
+          className="fixed inset-0 z-40 bg-zinc-950/10 sm:hidden"
           onClick={onClose}
         />
       )}
 
       {/* Panel */}
       <div
-        className={`fixed top-0 right-0 h-full z-50 bg-white dark:bg-gray-900
-                    border-l border-gray-200 dark:border-gray-800 shadow-xl
+        className={`fixed top-0 right-0 h-full z-50 bg-white
+                    border-l border-zinc-200 shadow-2xl
                     w-full sm:w-80 p-5 flex flex-col gap-4
                     transition-transform duration-300
                     ${open ? 'translate-x-0' : 'translate-x-full'}`}
       >
         {/* Header */}
         <div className="flex items-center justify-between">
-          <span className="text-sm font-semibold text-gray-900 dark:text-white tracking-wide">
+          <span className="text-sm font-semibold text-zinc-900 tracking-wide">
             Recent
           </span>
           <button
             id="history-close-btn"
             onClick={onClose}
-            className="text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 text-lg leading-none transition-colors"
+            className="text-zinc-400 hover:text-zinc-700 text-lg leading-none transition-colors cursor-pointer"
             aria-label="Close history panel"
           >
             ✕
@@ -78,7 +74,7 @@ function HistoryPanel({
 
         {/* List */}
         {recent.length === 0 ? (
-          <p className="text-xs text-gray-400 dark:text-gray-500 mt-2">
+          <p className="text-xs text-zinc-400 mt-2">
             No prompts yet. Generate a UI first!
           </p>
         ) : (
@@ -86,14 +82,14 @@ function HistoryPanel({
             {recent.map((prompt, i) => (
               <li
                 key={i}
-                className="flex items-start justify-between gap-3 rounded-xl border border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/50 p-3"
+                className="flex items-start justify-between gap-3 rounded-xl border border-zinc-100 bg-zinc-50 p-3"
               >
-                <span className="text-xs text-gray-700 dark:text-gray-300 leading-relaxed flex-1 break-words">
+                <span className="text-xs text-zinc-600 leading-relaxed flex-1 break-words">
                   {prompt.length > 45 ? prompt.slice(0, 45) + '…' : prompt}
                 </span>
                 <button
                   onClick={() => { onRerun(prompt); onClose(); }}
-                  className="shrink-0 text-xs text-indigo-600 dark:text-indigo-400 hover:underline font-medium"
+                  className="shrink-0 text-xs text-zinc-900 hover:underline font-medium cursor-pointer"
                   aria-label={`Re-run: ${prompt.slice(0, 30)}`}
                 >
                   ↩ Re-run
@@ -124,30 +120,42 @@ export default function Home() {
         body: JSON.stringify({ prompt }),
       });
 
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('Gemini API request failed:', errorText);
+        alert(`API Error: ${errorText}`);
+        // Set output to a string that compiles but throws inside rendering, triggering the ErrorBoundary
+        setOutput("function MicroUI() { throw new Error('API Error: " + errorText.replace(/'/g, "\\'") + "'); }");
+        return;
+      }
+
       const text = await response.text();
       setOutput(text);
       setHistory((prev) => [...prev, prompt]);
-    } catch (error) {
-      console.error('Failed to generate UI:', error);
+    } catch (error: any) {
+      const msg = error?.message || String(error);
+      console.error('Failed to generate UI due to exception:', error);
+      alert(`System Error: ${msg}`);
+      setOutput("function MicroUI() { throw new Error('System Error: " + msg.replace(/'/g, "\\'") + "'); }");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <main className="min-h-screen w-full flex flex-col relative bg-gray-50 dark:bg-gray-950">
+    <main className="min-h-screen w-full flex flex-col relative bg-zinc-50 font-sans">
       <div className="flex-1 flex flex-col items-center justify-center p-3 sm:p-4">
         <div className="w-full max-w-2xl flex flex-col items-center gap-8 z-10">
 
           {/* Tagline */}
           <div className="flex flex-col items-center gap-4 text-center w-full">
-            <span className="tracking-widest text-xs text-gray-400 font-medium uppercase">
-              Fluid
+            <span className="text-[10px] tracking-[0.2em] text-zinc-400 font-medium uppercase">
+              FLUID
             </span>
-            <h1 className="text-2xl sm:text-3xl font-light text-gray-900 dark:text-white leading-tight">
+            <h1 className="text-3xl font-light text-zinc-900 leading-tight">
               Tell me what you need.{' '}
               <br className="sm:hidden" />
-              <span className="text-indigo-600 dark:text-indigo-400">I'll build the interface.</span>
+              <span className="text-zinc-400">I'll build the interface.</span>
             </h1>
           </div>
 
@@ -161,7 +169,7 @@ export default function Home() {
 
           {/* Output */}
           {!loading && output && (
-            <div className="w-full mt-4 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl overflow-hidden shadow-sm animate-in fade-in slide-in-from-bottom-4 duration-500">
+            <div className="w-full mt-4 bg-white border border-zinc-100 rounded-2xl overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.04)] animate-in fade-in slide-in-from-bottom-4 duration-500">
               <DynamicRenderer
                 code={output}
                 onDismiss={() => setOutput('')}
@@ -173,7 +181,7 @@ export default function Home() {
       </div>
 
       {/* Footer */}
-      <div className="absolute bottom-0 w-full text-center pb-4 text-xs text-gray-300 dark:text-gray-600">
+      <div className="absolute bottom-4 w-full text-center text-xs text-zinc-400">
         Built at HackIndia 2026 &middot; Fluid by Team Hades
       </div>
 
@@ -182,7 +190,7 @@ export default function Home() {
         <button
           id="history-toggle-btn"
           onClick={() => setHistoryOpen(true)}
-          className="fixed bottom-6 right-6 z-40 text-xs border border-gray-300 dark:border-gray-700 rounded-full px-3 py-1.5 bg-white dark:bg-gray-900 text-gray-600 dark:text-gray-400 hover:border-indigo-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors shadow-sm"
+          className="fixed bottom-6 right-6 z-40 text-xs border border-zinc-200 rounded-full px-3 py-1.5 bg-white text-zinc-600 hover:border-zinc-900 hover:text-zinc-900 transition-colors shadow-sm cursor-pointer"
           aria-label="Open history panel"
         >
           History

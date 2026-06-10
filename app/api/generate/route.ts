@@ -7,7 +7,8 @@ fences, no explanation. Just the function body starting with:
   function MicroUI({ onDismiss }) {
 
 Rules:
-- Use ONLY Tailwind CSS classes for all styling
+- Use React.createElement for all rendering/markup (do NOT use JSX syntax like <div className="..."> as the browser cannot parse it natively)
+- Use ONLY Tailwind CSS classes for all styling (passed via className attributes in createElement)
 - Use ONLY React hooks available as globals: useState, useEffect, useRef
 - NO external imports or libraries whatsoever
 - The component MUST include a dismiss button that calls onDismiss()
@@ -19,14 +20,14 @@ export async function POST(req: NextRequest) {
   const { prompt } = await req.json();
 
   const response = await fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${process.env.GEMINI_API_KEY}`,
+    `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${process.env.GEMINI_API_KEY}`,
     {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         system_instruction: { parts: [{ text: SYSTEM_PROMPT }] },
         contents: [{ parts: [{ text: prompt }] }],
-        generationConfig: { temperature: 0.7, maxOutputTokens: 2048 }
+        generationConfig: { temperature: 0.7 }
       })
     }
   );
@@ -49,7 +50,9 @@ export async function POST(req: NextRequest) {
   }
   
   // Strip markdown fences
-  code = code.replace(/```[a-z]*\n?/g, '').replace(/```/g, '').trim();
+  code = code.replace(/```(tsx|jsx|typescript|javascript|react)?\n?/gi, '').replace(/```/g, '').trim();
+
+  console.log("Gemini Raw Response:", code);
 
   return new NextResponse(code, {
     headers: { 'Content-Type': 'text/plain' }

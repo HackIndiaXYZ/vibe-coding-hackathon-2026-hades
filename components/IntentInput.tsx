@@ -45,9 +45,9 @@ export default function IntentInput({ onSubmit, loading }: IntentInputProps) {
   };
 
   return (
-    <div className="w-full rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm bg-white dark:bg-gray-900 p-3 sm:p-4 transition-all focus-within:ring-2 focus-within:ring-indigo-500/20 focus-within:border-indigo-400">
+    <div className="w-full rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] bg-white p-3 sm:p-4 transition-all focus-within:shadow-[0_8px_30px_rgb(0,0,0,0.08)]">
       <textarea
-        className="w-full resize-none border-none outline-none text-base min-h-[60px] sm:min-h-[80px] bg-transparent text-gray-900 dark:text-gray-100 placeholder:text-gray-400"
+        className="w-full resize-none border-none outline-none text-base min-h-[60px] sm:min-h-[80px] bg-transparent text-zinc-800 placeholder:text-zinc-300 font-sans"
         placeholder="e.g. Split a $150 dinner among 5 people, Sarah only had drinks..."
         value={value}
         onChange={(e) => setValue(e.target.value)}
@@ -55,14 +55,14 @@ export default function IntentInput({ onSubmit, loading }: IntentInputProps) {
         disabled={loading}
       />
       
-      <div className="mt-2 pt-3 border-t border-gray-100 dark:border-gray-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      <div className="mt-2 pt-3 border-t border-zinc-100 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div className="flex flex-wrap gap-2">
           {EXAMPLES.map((example) => (
             <button
               key={example.label}
               type="button"
               onClick={() => setValue(example.prompt)}
-              className="text-xs rounded-full border border-gray-200 dark:border-gray-700 px-3 py-1 cursor-pointer hover:border-indigo-400 hover:text-indigo-600 dark:hover:border-indigo-500 dark:hover:text-indigo-400 transition-colors bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300"
+              className="text-xs text-zinc-500 hover:text-zinc-900 transition-colors cursor-pointer px-2 py-1"
               disabled={loading}
             >
               {example.label}
@@ -72,21 +72,21 @@ export default function IntentInput({ onSubmit, loading }: IntentInputProps) {
         
         <div className="shrink-0 w-full sm:w-auto flex justify-end">
           {loading ? (
-            <div className="relative overflow-hidden bg-gray-100 dark:bg-gray-800 rounded-xl px-4 py-2 flex items-center justify-center min-w-[160px]">
-              <div className="absolute inset-0 -translate-x-full animate-[shimmer_1.5s_infinite] bg-gradient-to-r from-transparent via-white/40 dark:via-white/10 to-transparent" style={{ animationName: 'shimmer', animationDuration: '1.5s', animationIterationCount: 'infinite' }} />
+            <div className="relative overflow-hidden bg-zinc-100 rounded-lg px-5 py-2 flex items-center justify-center min-w-[160px]">
+              <div className="absolute inset-0 -translate-x-full animate-[shimmer_1.5s_infinite] bg-gradient-to-r from-transparent via-white/50 to-transparent" style={{ animationName: 'shimmer', animationDuration: '1.5s', animationIterationCount: 'infinite' }} />
               <style>{`
                 @keyframes shimmer {
                   100% { transform: translateX(100%); }
                 }
               `}</style>
-              <span className="relative text-sm text-gray-500 dark:text-gray-400 font-medium z-10">Generating your UI...</span>
+              <span className="relative text-sm text-zinc-500 font-medium z-10">Generating UI...</span>
             </div>
           ) : (
             <button
               type="button"
               onClick={handleSubmit}
               disabled={!value.trim()}
-              className="bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl px-4 py-2 text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              className="bg-zinc-900 hover:bg-zinc-800 text-white rounded-lg px-5 py-2 text-sm font-medium transition-all shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Generate UI
             </button>
