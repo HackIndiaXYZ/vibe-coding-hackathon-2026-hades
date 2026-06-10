@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import IntentInput from '@/components/IntentInput';
 import DynamicRenderer from '@/components/DynamicRenderer';
+import { motion } from 'framer-motion';
 
 /* ─── Shimmer skeleton card ───────────────────────────────── */
 function ShimmerCard() {
@@ -143,7 +144,12 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen w-full flex flex-col relative bg-zinc-50 font-sans">
+    <motion.main 
+      initial={{ opacity: 0, y: 20 }} 
+      animate={{ opacity: 1, y: 0 }} 
+      transition={{ duration: 0.8, ease: "easeOut" }}
+      className="min-h-screen w-full flex flex-col relative bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-indigo-50/40 via-zinc-50 to-white font-sans"
+    >
       <div className="flex-1 flex flex-col items-center justify-center p-3 sm:p-4">
         <div className="w-full max-w-2xl flex flex-col items-center gap-8 z-10">
 
@@ -155,7 +161,7 @@ export default function Home() {
             <h1 className="text-3xl font-light text-zinc-900 leading-tight">
               Tell me what you need.{' '}
               <br className="sm:hidden" />
-              <span className="text-zinc-400">I'll build the interface.</span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-zinc-400 via-indigo-400 to-zinc-400 bg-[length:200%_auto] animate-[pulse_3s_cubic-bezier(0.4,0,0.6,1)_infinite,text-shimmer_4s_ease_infinite]">I'll build the interface.</span>
             </h1>
           </div>
 
@@ -204,6 +210,6 @@ export default function Home() {
         history={history}
         onRerun={handleSubmit}
       />
-    </main>
+    </motion.main>
   );
 }
