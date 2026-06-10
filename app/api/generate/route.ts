@@ -32,9 +32,23 @@ export async function POST(req: NextRequest) {
   );
 
   const data = await response.json();
-  let code = data.candidates?.[0]?.content?.parts?.[0]?.text ?? '';
+  
+  // 1. Check if the API returned an HTTP error
+  if (!response.ok) {
+    console.error("Gemini API Error:", data);
+    return new NextResponse(`API Error: ${data.error?.message || 'Unknown error'}`, { status: 500 });
+  }
 
-  // Strip any markdown fences Gemini adds despite instructions
+  // 2. Extract the text safely
+  let code = data.candidates?.[0]?.content?.parts?.[0]?.text;
+  
+  // 3. Check if the text is missing (e.g., safety block)
+  if (!code) {
+    console.error("Gemini returned no code. Full response:", JSON.stringify(data));
+    return new NextResponse("Error: Gemini returned an empty response. Check console logs.", { status: 500 });
+  }
+  
+  // Strip markdown fences
   code = code.replace(/```[a-z]*\n?/g, '').replace(/```/g, '').trim();
 
   return new NextResponse(code, {

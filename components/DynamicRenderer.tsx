@@ -35,7 +35,10 @@ export default function DynamicRenderer({
         `${code}\nreturn MicroUI;`
       );
       return fn(React, React.useState, React.useEffect, React.useRef);
-    } catch {
+    } catch (err) {
+      console.error("🔥 Dynamic Compilation Failed!");
+      console.error("The Error:", err);
+      console.log("The Code Gemini Returned:\n", code);
       return null;
     }
   }, [code]);
