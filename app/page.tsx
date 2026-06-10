@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import Image from 'next/image';
 import IntentInput from '@/components/IntentInput';
 import DynamicRenderer from '@/components/DynamicRenderer';
 import { motion } from 'framer-motion';
@@ -144,20 +145,42 @@ export default function Home() {
   };
 
   return (
-    <motion.main 
-      initial={{ opacity: 0, y: 20 }} 
-      animate={{ opacity: 1, y: 0 }} 
+    <motion.main
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8, ease: "easeOut" }}
       className="min-h-screen w-full flex flex-col relative bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-indigo-50/40 via-zinc-50 to-white font-sans"
     >
       <div className="flex-1 flex flex-col items-center justify-center p-3 sm:p-4">
         <div className="w-full max-w-2xl flex flex-col items-center gap-8 z-10">
 
-          {/* Tagline */}
-          <div className="flex flex-col items-center gap-4 text-center w-full">
-            <span className="text-[10px] tracking-[0.2em] text-zinc-400 font-medium uppercase">
-              FLUID
-            </span>
+          {/* Hero Brand */}
+          <div className="flex flex-col items-center gap-3 text-center w-full">
+            {/* Logo + FLUID wordmark */}
+            <div className="flex items-center gap-4">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.6, ease: 'easeOut' }}
+              >
+                <Image
+                  src="/icon.png"
+                  alt="Fluid logo"
+                  width={56}
+                  height={56}
+                  className="rounded-2xl shadow-lg"
+                  priority
+                />
+              </motion.div>
+              <motion.span
+                initial={{ opacity: 0, x: -12 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.7, delay: 0.1, ease: 'easeOut' }}
+                className="text-6xl sm:text-7xl font-extrabold tracking-tight leading-none text-transparent bg-clip-text bg-gradient-to-br from-indigo-500 via-violet-500 to-fuchsia-500"
+              >
+                FLUID
+              </motion.span>
+            </div>
             <h1 className="text-3xl font-light text-zinc-900 leading-tight">
               Tell me what you need.{' '}
               <br className="sm:hidden" />
@@ -186,10 +209,7 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Footer */}
-      <div className="absolute bottom-4 w-full text-center text-xs text-zinc-400">
-        Built at HackIndia 2026 &middot; Fluid by Team Hades
-      </div>
+      {/* Footer removed */}
 
       {/* History ghost button */}
       {history.length > 0 && (
